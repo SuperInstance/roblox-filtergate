@@ -247,7 +247,7 @@ function FilterGate.isSafe(text: string): boolean
 end
 
 --[[
-    Filter a string for display to a specific player (broadcast/UI).
+    Filter a string for broadcast/UI display (non-chat).
 
     Calls Roblox TextService:FilterStringAsync and retrieves the
     non-chat broadcast string. On success, returns the filtered string.
@@ -257,11 +257,14 @@ end
     The contract: never return unfiltered text. If the filter breaks,
     the string doesn't show. Fail-closed.
 
+    For AI-generated text with no human author, use the NPC's UserId
+    as fromUserId. For chat messages between players, use filterForChat.
+
     @param text string — the text to filter
-    @param playerId number — UserId of the player who will see it
+    @param fromUserId number — UserId of the text author (passed to FilterStringAsync)
     @return string? — filtered string, or nil on any failure
 ]]
-function FilterGate.filterFor(text: string, playerId: number): string?
+function FilterGate.filterFor(text: string, fromUserId: number): string?
     -- Pre-check for injection attempts
     local injection = detectInjection(text)
     if injection then
@@ -272,7 +275,7 @@ function FilterGate.filterFor(text: string, playerId: number): string?
         return nil
     end
 
-    local filteredText, reason = safeFilterCall(text, playerId)
+    local filteredText, reason = safeFilterCall(text, fromUserId)
 
     if filteredText and config.onFiltered then
         pcall(config.onFiltered, text, "broadcast")
