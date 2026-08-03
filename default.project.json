@@ -1,0 +1,12 @@
+{
+  "name": "roblox-filtergate",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "FilterGate": {
+        "$path": "src/FilterGate.lua"
+      }
+    }
+  }
+}
