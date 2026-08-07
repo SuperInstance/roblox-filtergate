@@ -243,6 +243,7 @@ end
     @return boolean — true if no injection patterns found
 ]]
 function FilterGate.isSafe(text: string): boolean
+    if type(text) ~= "string" then return true end
     return detectInjection(text) == nil
 end
 
@@ -265,6 +266,11 @@ end
     @return string? — filtered string, or nil on any failure
 ]]
 function FilterGate.filterFor(text: string, fromUserId: number): string?
+    -- Validate input before any processing (fail-closed for nil/invalid)
+    if type(text) ~= "string" or text == "" then
+        return nil
+    end
+
     -- Pre-check for injection attempts
     local injection = detectInjection(text)
     if injection then
@@ -296,6 +302,11 @@ end
     @return string? — filtered text, or nil on failure
 ]]
 function FilterGate.filterForChat(text: string, fromUserId: number, toUserId: number): string?
+    -- Validate input before any processing (fail-closed for nil/invalid)
+    if type(text) ~= "string" or text == "" then
+        return nil
+    end
+
     -- Validate recipient
     if typeof(toUserId) ~= "number" or toUserId <= 0 then
         warn("[FilterGate] Invalid toUserId for chat filter")

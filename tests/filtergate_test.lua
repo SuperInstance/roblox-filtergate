@@ -89,17 +89,18 @@ describe("FilterGate fail-closed behavior", function()
         expect(result):toBe(nil)
     end)
 
-    -- BUG: FilterGate crashes on nil input instead of returning nil.
-    -- The fail-closed contract says return nil on error, but the internal
-    -- isSafe check calls string.lower(text) which throws on nil.
-    -- This is a real bug — the pcall in filterFor should catch it,
-    -- but the isSafe call happens before the pcall boundary.
-    -- TODO: Report this to Casey.
-    it("crashes on nil text (BUG: should return nil for fail-closed)", function()
-        local ok = pcall(function()
-            FilterGate.filterFor(nil, 12345)
+    -- Fixed: FilterGate now handles nil input gracefully by returning nil (fail-closed).
+    it("returns nil for nil text (fail-closed, no crash)", function()
+        local ok, result = pcall(function()
+            return FilterGate.filterFor(nil, 12345)
         end)
-        expect(ok):toBe(false) -- currently crashes; should be true + return nil
+        expect(ok):toBe(true)
+        expect(result):toBe(nil)
+    end)
+
+    it("returns nil for empty string text", function()
+        local result = FilterGate.filterFor("", 12345)
+        expect(result):toBe(nil)
     end)
 end)
 
