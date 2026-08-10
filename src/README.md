@@ -1,27 +1,45 @@
 # src/ — FilterGate Source
 
-> *One valve. One hull. One contract.*
+The entire module is a single file: [`FilterGate.lua`](./FilterGate.lua).
 
-## Files
-
-| File | Description |
-|------|-------------|
-| [`FilterGate.lua`](FilterGate.lua) | The complete module — single file, zero dependencies. Fail-closed filtering, injection detection, rate limiting, batch support. |
+~300 lines of Luau. Zero external dependencies. Server-side only.
 
 ## Architecture
 
 ```
-CONFIGURATION         — Rate limits, injection patterns (25+)
-MODULE                — filterFor, filterForChat, filterBatch
-INJECTION DETECTION   — Pattern matching against known prompt-injection vectors
-RATE LIMITING         — Sliding window tracker, overflow refusal
-OBSERVABILITY         — onFiltered, onBlocked, onRateLimited callbacks
+src/
+  FilterGate.lua        # The entire module — no other files needed
 ```
 
-The [fail-closed contract](../docs/engineering-manual.md#the-contract) is the core invariant: every code path ends either at approved output or `nil`. There is no quiet detour around the gate.
+### Internal Sections
 
-See the [Engineering Manual](../docs/engineering-manual.md) for the full architecture.
+| Section | Purpose |
+|---------|---------|
+| Configuration | Defaults, 25+ injection patterns, mutable config table |
+| Rate Limiter | Sliding window timestamp pruning and enforcement |
+| Injection Detector | Lowercase substring matching against pattern table |
+| Safe Filter Call | Core TextService wrapper with double-pcall |
+| Public API | `filterFor`, `filterForChat`, `filterBatch`, `detectInjection`, `isSafe`, `configure`, `getStats`, `reset` |
+
+## The Pipeline
+
+```
+text ──▶ validate ──▶ injection check ──▶ rate check ──▶ TextService ──▶ result
+                           │                      │              │
+                           ▼                      ▼              ▼
+                       onBlocked()          returns nil     onFiltered()
+```
+
+Every step can short-circuit to `nil`. No step can bypass to raw text.
+
+## Key Design Decisions
+
+1. **Double-pcall** — `FilterStringAsync` and `GetNonChatStringForBroadcastAsync` fail independently; separate pcalls handle each
+2. **Fail-closed, not retry** — no exponential backoff; on failure, return `nil` immediately
+3. **Sliding window rate limiter** — O(n) per call, but n capped at 50; simpler than token bucket
+4. **Injection as pre-check** — pattern matching before TextService saves rate budget for legitimate text
+5. **Callbacks in pcall** — buggy user callbacks never crash the filter pipeline
 
 ---
 
-[← Back to FilterGate](../README.md)
+← Back to [FilterGate](../README.md)

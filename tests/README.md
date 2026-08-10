@@ -1,31 +1,27 @@
 # tests/ — FilterGate Test Suite
 
-> *Sea trials. Every valve pressured, every seal verified.*
+Tests run outside of Roblox Studio using the custom [TestKit](../testkit/init.lua) framework, which mocks `TextService`, `typeof()`, and `os.clock()`.
 
-## Test Files
+## Files
 
-| File | Framework | Coverage |
-|------|-----------|----------|
-| [`filtergate_test.lua`](filtergate_test.lua) | [TestKit](../testkit/init.lua) | Core filtering, fail-closed behavior, configuration, rate limiting |
-| [`filtergate_extended_test.lua`](filtergate_extended_test.lua) | [TestKit](../testkit/init.lua) | All 25+ injection patterns, batch filtering, edge cases, chat filtering, stats, API completeness |
+| File | Focus | Key Tests |
+|------|-------|-----------|
+| [`filtergate_test.lua`](./filtergate_test.lua) | Module structure, filtering, injection detection, rate limiting, chat filtering | Input validation, all injection patterns, rate limit enforcement, batch filtering, stats |
+| [`filtergate_extended_test.lua`](./filtergate_extended_test.lua) | Exhaustive injection pattern coverage, rate limiter edge cases, batch edge cases, configuration, API completeness | All 25+ injection patterns individually tested, window expiry, disable flags, callback dispatch, reset behavior |
 
-## Running Tests
+## Coverage
 
-```bash
-LUA_PATH="?.lua;testkit/?.lua;?/init.lua" lua5.1 tests/filtergate_test.lua
-LUA_PATH="?.lua;testkit/?.lua;?/init.lua" lua5.1 tests/filtergate_extended_test.lua
-```
+90 tests total. Key areas:
 
-## Key Test Categories
-
-- **Fail-closed verification** — every error path returns `nil`, never raw text
-- **Injection detection** — all 25+ patterns matched, including Unicode obfuscation
-- **Rate limiting** — overflow returns `nil` without hitting Roblox throttles
-- **Batch filtering** — arrays filtered in sequence, rate limits respected
-- **Configuration** — `configure()` properly adjusts all settings
-
-See also: [`spec/FilterGate_spec.lua`](../spec/FilterGate_spec.lua) for the TestEZ-format spec.
+- ✅ All 25+ injection patterns (individually tested, case-insensitive)
+- ✅ Rate limiter: enforcement, window pruning, disable toggle
+- ✅ Input validation: nil, empty string, non-string, invalid UserId
+- ✅ Batch filtering: mixed results, empty arrays, all-fail scenarios
+- ✅ Chat vs. broadcast: correct TextService methods used
+- ✅ Configuration: all options, callback dispatch via pcall
+- ✅ Stats and reset: rate-limiter introspection
+- ✅ API completeness: all exported functions verified
 
 ---
 
-[← Back to FilterGate](../README.md)
+← Back to [FilterGate](../README.md)
