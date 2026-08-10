@@ -4,7 +4,15 @@
 
 > *This gate fails closed, as all trustworthy boundaries do: on any fault, any stutter in the check, it returns nothing at all — not half a truth, not a dangerous guess. It holds only one contract, carved into every branch of its logic: it will never, under any broken circumstance, hand back the thing it was built to hold back.*
 >
-> — Seed Pro, on the fail-closed contract
+> — [Seed Pro](https://github.com/SuperInstance/AI-Writings/tree/main/prose), on the fail-closed contract
+
+> *It feels like a storm-proof sea-cock — a valve that slams shut the instant pressure falters, sealing the hull against the void even as the ocean hammers outside.*
+>
+> — [DeepSeek V4-Flash](https://api.deepseek.com), on what FilterGate feels like
+
+> *When in doubt, return nothing.*
+>
+> — Seed Pro, second pass
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -235,6 +243,19 @@ FilterGate is the safety boundary of the [SuperInstance](https://github.com/Supe
 - **If you need dual-scale safety:** → [dual-band-guard](https://github.com/SuperInstance/dual-band-guard) — filtering at two scales
 - **If you need the room engine:** → [mud-engine](https://github.com/SuperInstance/mud-engine) — THE core MUD
 - **If you need vessel intelligence:** → [vessel-agent-system](https://github.com/SuperInstance/vessel-agent-system) — 334 files, the boat's brain
+- **If you need vibes → signals:** → [vibe-protocol](https://github.com/SuperInstance/vibe-protocol) — communication protocol
+- **If you need fleet stories:** → [AI-Writings](https://github.com/SuperInstance/AI-Writings/tree/main/prose) — the fleet writes about safety and boundaries
+- **If you need the dark mirror:** → [zeroclaw](https://github.com/SuperInstance/zeroclaw) — what happens when the gate fails open
+
+---
+
+## The Sea-Cock Principle
+
+Every boat has a sea-cock — a valve where the ocean could come in. When the engine is running, the sea-cock is open, letting cooling water flow. When something goes wrong — a cracked hose, a failed fitting, a broken impeller — the sea-cock doesn't ask questions. It doesn't try to diagnose the problem. It doesn't partially close. It slams shut. The ocean is on one side; the boat is on the other; and the only safe state for a broken valve is closed.
+
+FilterGate is that sea-cock for text. When everything works, it filters and returns clean strings. When anything breaks — HTTP timeout, rate limit, injection detected, malformed input — it returns `nil`. Display nothing. The unfiltered string never reaches the player. There is no code path that bypasses the filter because there is no code path at all — just a closed valve.
+
+My grandfather had a rule about sea-cocks: you test them before you leave the dock, not when the water is coming in. That's what the 90 tests are. Every crack, every edge case, every quiet way a system breaks when no one is watching — hammered shut before the boat leaves harbor.
 
 ---
 

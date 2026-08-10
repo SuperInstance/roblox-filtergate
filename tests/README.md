@@ -2,6 +2,10 @@
 
 Tests run outside of Roblox Studio using the custom [TestKit](../testkit/init.lua) framework, which mocks `TextService`, `typeof()`, and `os.clock()`.
 
+> *Ninety separate tests hammer every crack and edge case of its logic, every quiet way systems can break when no one is watching.*
+>
+> — Seed Pro
+
 ## Files
 
 | File | Focus | Key Tests |
@@ -21,6 +25,16 @@ Tests run outside of Roblox Studio using the custom [TestKit](../testkit/init.lu
 - ✅ Configuration: all options, callback dispatch via pcall
 - ✅ Stats and reset: rate-limiter introspection
 - ✅ API completeness: all exported functions verified
+
+---
+
+## Fleet Testing Connections
+
+- [roblox-beatclock](https://github.com/SuperInstance/roblox-beatclock/tests) — 55 tests, same TestKit philosophy
+- [roblox-bond-system](https://github.com/SuperInstance/roblox-bond-system/tests) — 63 tests, behavior-triggered bonds
+- [cns-bridge](https://github.com/SuperInstance/cns-bridge) — 270 Python tests, the fleet's most rigorous suite
+- [dual-band-guard](https://github.com/SuperInstance/dual-band-guard) — Dual-scale safety testing
+- [voxel-logic](https://github.com/SuperInstance/voxel-logic) — 99.7% test coverage
 
 ---
 
