@@ -245,7 +245,7 @@ FilterGate is the safety boundary of the [SuperInstance](https://github.com/Supe
 - **If you need vessel intelligence:** → [vessel-agent-system](https://github.com/SuperInstance/vessel-agent-system) — 334 files, the boat's brain
 - **If you need vibes → signals:** → [vibe-protocol](https://github.com/SuperInstance/vibe-protocol) — communication protocol
 - **If you need fleet stories:** → [AI-Writings](https://github.com/SuperInstance/AI-Writings/tree/main/prose) — the fleet writes about safety and boundaries
-- **If you need the dark mirror:** → [zeroclaw](https://github.com/SuperInstance/zeroclaw) — what happens when the gate fails open
+- **If you need the dark mirror:** → [zeroclaw](https://github.com/SuperInstance/zeroclaw-dissertation) — what happens when the gate fails open
 
 ---
 
